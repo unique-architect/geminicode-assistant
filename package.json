@@ -1,0 +1,169 @@
+{
+  "name": "geminicode-assistant",
+  "displayName": "GeminiCode Assistant",
+  "description": "A VSCode Extension integrating Google Gemini API-powered coding assistant with chat, inline code gen, and context-aware code intelligence.",
+  "version": "1.0.1",
+  "publisher": "Archinnov",
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": [
+    "Other",
+    "IntelliSense"
+  ],
+  "activationEvents": [
+    "onCommand:gemini.setApiKey",
+    "onCommand:gemini.askQuestion",
+    "onCommand:gemini.explainCode",
+    "onCommand:gemini.refactorCode",
+    "onCommand:gemini.fixBug",
+    "onCommand:gemini.generateCode",
+    "onView:geminiChatSidebar"
+  ],
+  "files": [
+     "out/**",
+     "webview/**",
+     "LICENSE.md",
+     "resources/**",
+     "package.json",
+     "README.md"
+   ],
+  "main": "./out/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package",
+    "pretest": "npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.3",
+    "@types/vscode": "^1.70.0",
+    "typescript": "^5.0.0",
+    "vsce": "^2.12.1"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "marked": "^5.0.0"
+  },
+  "repository": {
+  "type": "git",
+  "url": "https://github.com/unique-architect/geminicode-assistant.git"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "gemini.setApiKey",
+        "title": "Gemini: Set API Key"
+      },
+      {
+        "command": "gemini.askQuestion",
+        "title": "Gemini: Ask Question"
+      },
+      {
+        "command": "gemini.explainCode",
+        "title": "Gemini: Explain Code"
+      },
+      {
+        "command": "gemini.refactorCode",
+        "title": "Gemini: Refactor Code"
+      },
+      {
+        "command": "gemini.fixBug",
+        "title": "Gemini: Fix Bug"
+      },
+      {
+        "command": "gemini.generateCode",
+        "title": "Gemini: Generate Code"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "gemini.explainCode",
+          "when": "editorHasSelection",
+          "group": "navigation"
+        },
+        {
+          "command": "gemini.refactorCode",
+          "when": "editorHasSelection",
+          "group": "navigation"
+        },
+        {
+          "command": "gemini.fixBug",
+          "when": "editorHasSelection",
+          "group": "navigation"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "gemini.generateCode",
+          "when": "editorTextFocus && editorLangId != ''",
+          "group": "inline"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "geminiChatSidebarContainer",
+          "title": "Gemini Chat",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "geminiChatSidebarContainer": [
+        {
+          "id": "geminiChatSidebar",
+          "name": "Gemini Chat"
+        }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "GeminiCode Assistant Configuration",
+      "properties": {
+        "gemini.apiKey": {
+          "type": "string",
+          "description": "Your Google Gemini API key",
+          "default": "",
+          "secure": true
+        },
+        "gemini.maxTokens": {
+          "type": "number",
+          "default": 2048,
+          "description": "Maximum tokens per request"
+        },
+        "gemini.streaming": {
+          "type": "boolean",
+          "default": true,
+          "description": "Use streaming responses from the Gemini API"
+        },
+        "gemini.promptTemplates": {
+          "type": "array",
+          "description": "User-defined prompt templates for GeminiCode chat",
+          "default": [
+            { "name": "Default", "prompt": "" },
+            { "name": "Explain Code", "prompt": "Explain this code snippet:" },
+            { "name": "Refactor Code", "prompt": "Refactor the following code:" }
+          ],
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Template display name"
+              },
+              "prompt": {
+                "type": "string",
+                "description": "Prompt text inserted before user message"
+              }
+            },
+            "required": ["name", "prompt"]
+          }
+        }
+      }
+    }
+  }
+}

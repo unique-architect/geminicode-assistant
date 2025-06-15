@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'none';
+    style-src vscode-resource: 'unsafe-inline' https:;
+    img-src vscode-resource: https:;
+    script-src 'nonce-<nonce>';
+    font-src vscode-resource: https:;
+  " />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="codicon.css" rel="stylesheet" />
+  <link href="style.css" rel="stylesheet" />
+  <title>Gemini Chat</title>
+</head>
+<body>
+  <div id="chat-container">
+    <div id="conversation" role="log" aria-live="polite"></div>
+    <form id="input-form" aria-label="Send question to Gemini Code Assistant">
+      <textarea id="input" rows="2" placeholder="Ask Gemini..." aria-multiline="true"></textarea>
+      <button type="submit" aria-label="Send message">Send</button>
+    </form>
+  </div>
+  <div id="token-count" aria-live="polite"></div>
+<script nonce="<nonce>" src="main.js"></script>
+</body>
+</html>
